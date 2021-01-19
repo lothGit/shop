@@ -2,11 +2,15 @@
 using Shop.Core.Models;
 using Shop.Core.ViewModels;
 using Shop.DataAcces.InMemory;
+using Shop.DataAcces.Sql;
+//using Shop.DataAcces.Sql;
+//using Shop.DataAcces.Sql;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+
 
 namespace Shop.UserUI.Controllers
 {
@@ -16,8 +20,8 @@ namespace Shop.UserUI.Controllers
         IRepository<ProductCategory> contextCategory;
         public ProductManagerController()
         {
-            context = new InMemoryRepository<Product>();
-            contextCategory = new InMemoryRepository<ProductCategory>();
+            context = new SQlRepository<Product>(new MyContext());
+            contextCategory = new SQlRepository<ProductCategory>(new MyContext());
         }
 
 

@@ -18,8 +18,8 @@ namespace Shop.DataAcces.Sql
         {
         }
 
-       DbSet<Product> products { get; set; }
-        DbSet<ProductCategory> productCategories { get; set; }
+       public DbSet<Product> products { get; set; }
+       public  DbSet<ProductCategory> productCategories { get; set; }
     }
 
     //public class MyEntity

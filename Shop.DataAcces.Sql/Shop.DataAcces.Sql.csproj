@@ -58,6 +58,7 @@
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="MyContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SQlRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
