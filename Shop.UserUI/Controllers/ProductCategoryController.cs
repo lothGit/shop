@@ -12,31 +12,30 @@ namespace Shop.UserUI.Controllers
 {
     public class ProductCategoryController : Controller
     {
-        // GET: ProductCategory
-        //ProductCategoryRepository context;
         IRepository<ProductCategory> context;
+
         public ProductCategoryController()
         {
-            context = new SQlRepository<ProductCategory>(new MyContext());
+            context = new SQLRepository<ProductCategory>(new MyContext());
         }
 
-
-        // GET: ProductManager
         public ActionResult Index()
         {
-            List<ProductCategory> products = context.Collection().ToList();
-            return View(products);
+            List<ProductCategory> productCategories = context.Collection().ToList();
+            return View(productCategories);
         }
+
         public ActionResult Create()
         {
-            ProductCategory c = new ProductCategory();
-            return View(c);
+            ProductCategory p = new ProductCategory();
+            return View(p);
         }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(ProductCategory product)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 return View(product);
             }
@@ -46,33 +45,34 @@ namespace Shop.UserUI.Controllers
                 context.SaveChanges();
                 return RedirectToAction("Index");
             }
-
         }
+
         public ActionResult Edit(int id)
         {
             try
             {
-                ProductCategory c = context.FindById(id);
-                if (c == null)
+                ProductCategory p = context.FindById(id);
+                if (p == null)
                 {
                     return HttpNotFound();
                 }
                 else
                 {
-                    return View(c);
+                    return View(p);
                 }
             }
             catch (Exception)
             {
+
                 return HttpNotFound();
             }
 
         }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(ProductCategory cat, int id)
+        public ActionResult Edit(ProductCategory product, int id)
         {
-
             try
             {
                 ProductCategory prodToEdit = context.FindById(id);
@@ -82,16 +82,15 @@ namespace Shop.UserUI.Controllers
                 }
                 else
                 {
-
-                    if (ModelState.IsValid)
+                    if (!ModelState.IsValid)
                     {
-                        return View(cat);
+                        return View(product);
                     }
                     else
                     {
-                        //context.Update(product);
-                        prodToEdit.Category = cat.Category;
-                       
+                        //context.Update(product); ce n'est un context EF
+                        prodToEdit.Category = product.Category;
+
                         context.SaveChanges();
                         return RedirectToAction("Index");
                     }
@@ -100,8 +99,10 @@ namespace Shop.UserUI.Controllers
             }
             catch (Exception)
             {
+
                 return HttpNotFound();
             }
+
         }
 
         public ActionResult Delete(int id)
@@ -120,17 +121,20 @@ namespace Shop.UserUI.Controllers
             }
             catch (Exception)
             {
+
                 return HttpNotFound();
             }
+
         }
+
         [HttpPost]
         [ActionName("Delete")]
-        public ActionResult ConfirmDelete(int id)
+        public ActionResult ConfirDelete(int id)
         {
             try
             {
-                ProductCategory c = context.FindById(id);
-                if (c == null)
+                ProductCategory prodToDelete = context.FindById(id);
+                if (prodToDelete == null)
                 {
                     return HttpNotFound();
                 }
@@ -145,6 +149,8 @@ namespace Shop.UserUI.Controllers
             {
                 return HttpNotFound();
             }
+
         }
+
     }
 }

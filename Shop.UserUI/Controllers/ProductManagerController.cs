@@ -7,6 +7,7 @@ using Shop.DataAcces.Sql;
 //using Shop.DataAcces.Sql;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -18,43 +19,48 @@ namespace Shop.UserUI.Controllers
     {
         IRepository<Product> context;
         IRepository<ProductCategory> contextCategory;
+
         public ProductManagerController()
         {
-            context = new SQlRepository<Product>(new MyContext());
-            contextCategory = new SQlRepository<ProductCategory>(new MyContext());
+            context = new SQLRepository<Product>(new MyContext());
+            contextCategory = new SQLRepository<ProductCategory>(new MyContext());
         }
-
-
         // GET: ProductManager
         public ActionResult Index()
         {
             List<Product> products = context.Collection().ToList();
             return View(products);
         }
+
         public ActionResult Create()
         {
             ProductCategoryViewModel viewModel = new ProductCategoryViewModel();
             viewModel.Product = new Product();
             viewModel.ProductCategories = contextCategory.Collection();
-           // Product p = new Product();
             return View(viewModel);
         }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Product product)
+        public ActionResult Create(Product product, HttpPostedFileBase image)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 return View(product);
             }
             else
             {
+                if (image != null)
+                {
+                    product.Image = product.Name + Path.GetExtension(image.FileName);
+                    image.SaveAs(Server.MapPath("~/Content/ProdImages/") + product.Image);
+                }
                 context.Insert(product);
                 context.SaveChanges();
                 return RedirectToAction("Index");
             }
-
         }
+
         public ActionResult Edit(int id)
         {
             try
@@ -74,47 +80,55 @@ namespace Shop.UserUI.Controllers
             }
             catch (Exception)
             {
+
                 return HttpNotFound();
             }
 
         }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(Product product, int id)
+        public ActionResult Edit(Product product, int id, HttpPostedFileBase image)
         {
-
             try
             {
-                Product prodToEdit = context.FindById(id);
-                if (prodToEdit == null)
+                //Product prodToEdit = context.FindById(id);
+                //if(prodToEdit == null)
+                //{
+                //    return HttpNotFound();
+                //}
+                //else
+                //{
+                if (!ModelState.IsValid)
                 {
-                    return HttpNotFound();
+                    return View(product);
                 }
                 else
                 {
-
-                    if (ModelState.IsValid)
+                    if (image != null)
                     {
-                        return View(product);
+                        product.Image = product.Name + Path.GetExtension(image.FileName);
+                        image.SaveAs(Server.MapPath("~/Content/ProdImages/") + product.Image);
                     }
-                    else
-                    {
-                        //context.Update(product);
-                        prodToEdit.Name = product.Name;
-                        prodToEdit.Description = product.Description;
-                        prodToEdit.Price = product.Price;
-                        prodToEdit.Image = product.Image;
-                        prodToEdit.Category = product.Category;
-                        context.SaveChanges();
-                        return RedirectToAction("Index");
-                    }
+                    //context.Update(product); ce n'est un context EF
+                    //prodToEdit.Name = product.Name;
+                    //prodToEdit.Description = product.Description;
+                    //prodToEdit.Category = product.Category;
+                    //prodToEdit.Price = product.Price;
+                    //prodToEdit.Image = product.Image;
+                    context.Update(product);
+                    context.SaveChanges();
+                    return RedirectToAction("Index");
                 }
+
 
             }
             catch (Exception)
             {
+
                 return HttpNotFound();
             }
+
         }
 
         public ActionResult Delete(int id)
@@ -133,17 +147,20 @@ namespace Shop.UserUI.Controllers
             }
             catch (Exception)
             {
+
                 return HttpNotFound();
             }
+
         }
+
         [HttpPost]
         [ActionName("Delete")]
-        public ActionResult ConfirmDelete(int id)
+        public ActionResult ConfirDelete(int id)
         {
             try
             {
-                Product p = context.FindById(id);
-                if (p == null)
+                Product prodToDelete = context.FindById(id);
+                if (prodToDelete == null)
                 {
                     return HttpNotFound();
                 }
@@ -158,6 +175,8 @@ namespace Shop.UserUI.Controllers
             {
                 return HttpNotFound();
             }
+
         }
+
     }
 }

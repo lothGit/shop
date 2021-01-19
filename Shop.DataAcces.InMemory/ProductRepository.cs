@@ -15,33 +15,33 @@ namespace Shop.DataAcces.InMemory
 
         public ProductRepository()
         {
-            products = cache["products"] as List<Product>;
+            products = cache["products"] as List<Product>; //as sert à faire un cast
             if (products == null)
             {
                 products = new List<Product>();
             }
-
-
         }
+
         public void SaveChanges()
         {
             cache["products"] = products;
         }
+
         public void Insert(Product p)
         {
             products.Add(p);
         }
+
         public void Update(Product p)
         {
             Product prodToUpdate = products.Find(prod => prod.Id == p.Id);
             if (prodToUpdate != null)
             {
                 prodToUpdate = p;
-
             }
             else
             {
-                throw new Exception("Product not find");
+                throw new Exception("Product not found");
             }
         }
 
@@ -54,26 +54,28 @@ namespace Shop.DataAcces.InMemory
             }
             else
             {
-                throw new Exception("Product not find");
+                throw new Exception("Product not found");
             }
         }
+
+        //Le type IQuerable accépte les requête LINQ contrairement à une list classique
 
         public IQueryable<Product> Collection()
         {
             return products.AsQueryable();
         }
+
         public void Delete(int id)
         {
-            Product prodToDelete = products.Find(p => p.Id == id);
-            if (prodToDelete != null)
+            Product ProdToDelete = products.Find(p => p.Id == id);
+            if (ProdToDelete != null)
             {
-                products.Remove(prodToDelete);
+                products.Remove(ProdToDelete);
             }
             else
             {
-                throw new Exception("Product not find");
+                throw new Exception("Product not found");
             }
         }
-
     }
 }
