@@ -46,6 +46,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=3.6.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.3.6.0\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
     </Reference>
@@ -293,10 +299,6 @@
     <ProjectReference Include="..\Shop.DataAcces.InMemory\Shop.DataAcces.InMemory.csproj">
       <Project>{83c90ad7-1d33-45b5-bc3d-654fa055eb7d}</Project>
       <Name>Shop.DataAcces.InMemory</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Shop.DataAcees.SQL\Shop.DataAcees.SQL.csproj">
-      <Project>{55bce2b8-e25b-40c3-b927-4c76dc79b4cb}</Project>
-      <Name>Shop.DataAcees.SQL</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
