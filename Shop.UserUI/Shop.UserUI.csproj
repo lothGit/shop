@@ -300,6 +300,10 @@
       <Project>{83c90ad7-1d33-45b5-bc3d-654fa055eb7d}</Project>
       <Name>Shop.DataAcces.InMemory</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Shop.DataAcces.Sql\Shop.DataAcces.Sql.csproj">
+      <Project>{00f1f4ac-6153-4da7-ab41-522cc1fcfbea}</Project>
+      <Name>Shop.DataAcces.Sql</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
