@@ -10,74 +10,72 @@ namespace Shop.DataAcces.InMemory
 {
     public class ProductCategoryRepository
     {
-         ObjectCache cache = MemoryCache.Default;
-        List<ProductCategory> productCategories;
+        ObjectCache cache = MemoryCache.Default;
+        List<ProductCategory> productsCategories;
 
-       
-        
-        
-        
         public ProductCategoryRepository()
         {
-            productCategories = cache["productCategorys"] as List<ProductCategory>;
-            if (productCategories == null)
+            productsCategories = cache["productCategories"] as List<ProductCategory>; //as sert à faire un cast
+            if (productsCategories == null)
             {
-                productCategories = new List<ProductCategory>();
+                productsCategories = new List<ProductCategory>();
             }
-
-
         }
+
         public void SaveChanges()
         {
-            cache["productCategories"] = productCategories;
+            cache["productCategories"] = productsCategories;
         }
+
         public void Insert(ProductCategory p)
         {
-            productCategories.Add(p);
+            productsCategories.Add(p);
         }
+
         public void Update(ProductCategory p)
         {
-            ProductCategory prodToUpdate = productCategories.Find(prod => prod.Id == p.Id);
+            ProductCategory prodToUpdate = productsCategories.Find(prod => prod.Id == p.Id);
             if (prodToUpdate != null)
             {
                 prodToUpdate = p;
-
             }
             else
             {
-                throw new Exception("ProductCategory not find");
+                throw new Exception("Product category not found");
             }
         }
 
         public ProductCategory FindById(int id)
         {
-            ProductCategory p = productCategories.Find(prod => prod.Id == id);
+            ProductCategory p = productsCategories.Find(prod => prod.Id == id);
             if (p != null)
             {
                 return p;
             }
             else
             {
-                throw new Exception("ProductCategory not find");
+                throw new Exception("Product category not found");
             }
         }
+
+        //Le type IQuerable accépte les requête LINQ contrairement à une list classique
 
         public IQueryable<ProductCategory> Collection()
         {
-            return productCategories.AsQueryable();
+            return productsCategories.AsQueryable();
         }
+
         public void Delete(int id)
         {
-            ProductCategory prodToDelete = productCategories.Find(p => p.Id == id);
-            if (prodToDelete != null)
+            ProductCategory ProdToDelete = productsCategories.Find(p => p.Id == id);
+            if (ProdToDelete != null)
             {
-                productCategories.Remove(prodToDelete);
+                productsCategories.Remove(ProdToDelete);
             }
             else
             {
-                throw new Exception("ProductCategory not find");
+                throw new Exception("Product category not found");
             }
         }
-
     }
-    }
+}

@@ -17,36 +17,34 @@ namespace Shop.DataAcces.InMemory
 
         public InMemoryRepository()
         {
-
             className = typeof(T).Name;
-
             items = cache[className] as List<T>;
             if (items == null)
             {
                 items = new List<T>();
             }
-
-
         }
+
         public void SaveChanges()
         {
             cache[className] = items;
         }
+
         public void Insert(T t)
         {
             items.Add(t);
         }
+
         public void Update(T t)
         {
             T prodToUpdate = items.Find(prod => prod.Id == t.Id);
             if (prodToUpdate != null)
             {
                 prodToUpdate = t;
-
             }
             else
             {
-                throw new Exception("Product not find");
+                throw new Exception(className + " not found");
             }
         }
 
@@ -59,27 +57,29 @@ namespace Shop.DataAcces.InMemory
             }
             else
             {
-                throw new Exception("Product not find");
+                throw new Exception(className + " not found");
             }
         }
+
+        //Le type IQuerable accépte les requête LINQ contrairement à une list classique
 
         public IQueryable<T> Collection()
         {
             return items.AsQueryable();
         }
+
         public void Delete(int id)
         {
-            T prodToDelete = items.Find(p => p.Id == id);
-            if (prodToDelete != null)
+            T ProdToDelete = items.Find(p => p.Id == id);
+            if (ProdToDelete != null)
             {
-                items.Remove(prodToDelete);
+                items.Remove(ProdToDelete);
             }
             else
             {
-                throw new Exception(className + " not find");
+                throw new Exception(className + " not found");
             }
         }
-
     }
 }
 

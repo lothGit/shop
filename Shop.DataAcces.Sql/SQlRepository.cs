@@ -9,20 +9,19 @@ using System.Threading.Tasks;
 
 namespace Shop.DataAcces.Sql
 {
-    public class SQlRepository<T> : IRepository<T> where T:BaseEntity
+    public class SQLRepository<T> : IRepository<T> where T : BaseEntity
     {
         internal MyContext DataContext;
-        internal DbSet<T> dbset;
+        internal DbSet<T> dbSet;
 
-        public SQlRepository(MyContext DataContext)
+        public SQLRepository(MyContext DataContext)
         {
             this.DataContext = DataContext;
-            dbset = DataContext.Set<T>();
+            dbSet = DataContext.Set<T>();
         }
-
         public IQueryable<T> Collection()
         {
-            return dbset;
+            return dbSet;
         }
 
         public void Delete(int id)
@@ -30,18 +29,20 @@ namespace Shop.DataAcces.Sql
             T t = FindById(id);
             if (DataContext.Entry(t).State == EntityState.Detached)
             {
-                dbset.Attach(t);
+                dbSet.Attach(t);
             }
+            dbSet.Remove(t);
+
         }
 
         public T FindById(int id)
         {
-            return dbset.Find(id);
+            return dbSet.Find(id);
         }
 
         public void Insert(T t)
         {
-            dbset.Add(t);
+            dbSet.Add(t);
         }
 
         public void SaveChanges()
@@ -51,9 +52,8 @@ namespace Shop.DataAcces.Sql
 
         public void Update(T t)
         {
-            dbset.Attach(t);
+            dbSet.Attach(t); //charge l'objet t dans le context
             DataContext.Entry(t).State = EntityState.Modified;
         }
     }
-
 }
