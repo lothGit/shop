@@ -1,4 +1,5 @@
-﻿using Shop.Core.Models;
+﻿using Shop.Core.Logic;
+using Shop.Core.Models;
 using Shop.Core.ViewModels;
 using Shop.DataAcces.InMemory;
 using System;
@@ -11,12 +12,12 @@ namespace Shop.UserUI.Controllers
 {
     public class ProductManagerController : Controller
     {
-        ProductRepository context;
-        ProductCategoryRepository contextCategory;
+        IRepository<Product> context;
+        IRepository<ProductCategory> contextCategory;
         public ProductManagerController()
         {
-            context = new ProductRepository();
-            contextCategory = new ProductCategoryRepository();
+            context = new InMemoryRepository<Product>();
+            contextCategory = new InMemoryRepository<ProductCategory>();
         }
 
 
