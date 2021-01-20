@@ -52,7 +52,19 @@ namespace Shop.UserUI.Controllers
             {
                 if (image != null)
                 {
-                    product.Image = product.Name + Path.GetExtension(image.FileName);
+                    int maxId;
+                    try
+                    {
+                        maxId = context.Collection().Max(p => p.Id);
+
+                    }
+                    catch (Exception)
+                    {
+                        maxId = 0;
+                    }
+                    int next = maxId + 1;
+
+                    product.Image = next + Path.GetExtension(image.FileName);
                     image.SaveAs(Server.MapPath("~/Content/ProdImages/") + product.Image);
                 }
                 context.Insert(product);
@@ -107,7 +119,7 @@ namespace Shop.UserUI.Controllers
                 {
                     if (image != null)
                     {
-                        product.Image = product.Name + Path.GetExtension(image.FileName);
+                        product.Image = product.Id + Path.GetExtension(image.FileName);
                         image.SaveAs(Server.MapPath("~/Content/ProdImages/") + product.Image);
                     }
                     //context.Update(product); ce n'est un context EF
